@@ -15,14 +15,18 @@ import datetime
 import os
 import shutil
 
-def computeOutDir(argv):
-
-    if not os.getcwd() == "/":
+def verifyExecutionDirectory():
+    if not os.path.isdir("cli") or not os.path.isfile("LICENSE.txt"):
         print("[ Error ] Please run cli/ scripts from the root directory")
         sys.exit(1)
 
     if not os.path.isdir("out"):
         os.mkdir("out")
+
+
+def computeOutDir(argv):
+
+    verifyExecutionDirectory()
 
     dirName = f"out/{datetime.datetime.utcnow().strftime('%Y-%m-%d')}"
 
@@ -41,33 +45,19 @@ def computeOutDir(argv):
             readmeFile.write(
                 f"""
                 This folder has been created by MonitoraPA on {os.path.basename(dirName)}.
-
-                The file enti.tsv has been created by AgID and distributed under CC BY 4.0.
-                An updated version can be downloaded from https://indicepa.gov.it/ipa-dati/dataset/enti
-
-                Everything else inside this folder can be used under the Hacking License.
-                See LICENCE.txt for the exact terms and conditions.
-
+                https://monitora-pa.it/
+                The file enti.tsv has been originally created by AgID and distributed under CC BY 4.0.
+                An up-to-date version can be downloaded from https://indicepa.gov.it/ipa-dati/dataset/enti
+                The derivative works provided here (sometimes with the same file name) 
+                can be used according to the terms and conditions of the Hacking License.
+                Everything else inside this folder can be used according to the terms 
+                and conditions of the Hacking License.
+                
+                Read LICENCE.txt for the exact terms and conditions applied.
                 """
             )
 
     return dirName
-
-    # if not "check/" in argv[1]:
-    #     sys.exit("Missing GDPR compliance check.")
-
-    # if not "out/" in argv[2] or not "enti.tsv" in argv[2]:
-    #     sys.exit("Missing enti.tsv path.")
-
-    # check = os.path.splitext(os.path.basename(argv[1]))[0]
-    # outDir = os.path.dirname(argv[2])
-    # point = os.path.splitext(os.path.basename(argv[0]))[0]
-
-    # dirName = "%s/%s/%s" % (outDir, check, point)
-
-    # if not os.path.isdir(dirName):
-    #     os.makedirs(dirName, 0o755)
-    # return dirName
 
 def main():
     outDir = computeOutDir(sys.argv)
