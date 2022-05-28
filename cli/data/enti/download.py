@@ -23,6 +23,10 @@ def verifyExecutionDirectory():
     if not os.path.isdir("out"):
         os.mkdir("out")
 
+    if not os.access("out", os.W_OK):
+        print("[ Error ] ./out directory is not writable")
+        sys.exit(1)
+
 
 def computeOutDir(argv):
 
