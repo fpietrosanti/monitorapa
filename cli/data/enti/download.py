@@ -4,18 +4,81 @@
 #
 # Copyright (C) 2022 Giacomo Tesio <giacomo@tesio.it>
 # Copyright (C) 2022 Leonardo Canello <leonardocanello@protonmail.com>
+# Copyright (C) 2022 Andrea Foletto <andrea@yaaaw.it>
 #
 # MonitoraPA is a hack. You can use it according to the terms and
 # conditions of the Hacking License (see LICENSE.txt)
 
 import sys
 import requests
-import commons
+import datetime
+import os
+import shutil
 
-outDir = commons.computeOutDir(sys.argv)
-url = 'https://indicepa.gov.it/ipa-dati/datastore/dump/d09adf99-dc10-4349-8c53-27b1e5aa97b6?bom=True&format=tsv'
-r = requests.get(url, allow_redirects=True)
-result = r.content.replace(
-    b'HTTPS:SISTEMAAMBIENTELUCCA.IT', b'HTTPS://SISTEMAAMBIENTELUCCA.IT')
-open("%s/enti.tsv" % outDir, 'wb').write(result)
-print("%s/enti.tsv" % outDir)
+def verifyExecutionDirectory():
+    if not os.path.isdir("cli") or not os.path.isfile("LICENSE.txt"):
+        print("[ Error ] Please run cli/ scripts from the root directory")
+        sys.exit(1)
+
+    if not os.path.isdir("out"):
+        os.mkdir("out")
+
+    if not os.access("out", os.W_OK):
+        print("[ Error ] ./out directory is not writable")
+        sys.exit(1)
+
+
+def computeOutDir(argv):
+
+    verifyExecutionDirectory()
+
+    dirName = f"out/{datetime.datetime.utcnow().strftime('%Y-%m-%d')}"
+
+    if not os.path.isdir(dirName):
+        os.mkdir(dirName)
+        print(f"[ ℹ️  ] Created {dirName} directory")
+
+    if not os.path.isfile(os.path.join(dirName, "LICENSE.txt")):
+        shutil.copy(
+            os.path.abspath("LICENSE.txt"),
+            os.path.abspath(dirName)
+        )
+
+    if not os.path.isfile(os.path.join(dirName, "README.md")):
+        with open(os.path.join(dirName, "README.md"), "w") as readmeFile:
+            readmeFile.write(
+                f"""
+                This folder has been created by MonitoraPA on {os.path.basename(dirName)}.
+                https://monitora-pa.it/
+                The file enti.tsv has been originally created by AgID and distributed under CC BY 4.0.
+                An up-to-date version can be downloaded from https://indicepa.gov.it/ipa-dati/dataset/enti
+                The derivative works provided here (sometimes with the same file name) 
+                can be used according to the terms and conditions of the Hacking License.
+                Everything else inside this folder can be used according to the terms 
+                and conditions of the Hacking License.
+                
+                Read LICENCE.txt for the exact terms and conditions applied.
+                """
+            )
+
+    return dirName
+
+def main():
+    outDir = computeOutDir(sys.argv)
+
+    url = 'https://indicepa.gov.it/ipa-dati/datastore/dump/d09adf99-dc10-4349-8c53-27b1e5aa97b6?bom=True&format=tsv'
+    response = requests.get(url, allow_redirects=True)
+    result = response.content.replace(b'HTTPS:SISTEMAAMBIENTELUCCA.IT', b'HTTPS://SISTEMAAMBIENTELUCCA.IT')
+
+    with open(f"{outDir}/enti.tsv", "wb") as outFile:
+        outFile.write(result)
+
+    print(f"[ ✅ ] Done. You can find the dataset at {outDir}/enti.tsv directory")
+
+if __name__ == "__main__":
+    try:
+        print("[ ℹ️  ] Started download.py script")
+        main()
+    except KeyboardInterrupt:
+        print("[ ❌ ] keyboard interrupt, aborting")
+        sys.exit(1)
