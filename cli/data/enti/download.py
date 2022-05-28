@@ -4,6 +4,7 @@
 #
 # Copyright (C) 2022 Giacomo Tesio <giacomo@tesio.it>
 # Copyright (C) 2022 Leonardo Canello <leonardocanello@protonmail.com>
+# Copyright (C) 2022 Andrea Foletto <andrea@yaaaw.it>
 #
 # MonitoraPA is a hack. You can use it according to the terms and
 # conditions of the Hacking License (see LICENSE.txt)
@@ -17,7 +18,7 @@ import shutil
 def computeOutDir(argv):
 
     if not os.getcwd() == "/":
-        print("\x1b[1m[ \x1b[31mError\x1b[39m ] Please run \x1b[36mcli/\x1b[39m scripts from the root directory\x1b[0m")
+        print("[ Error ] Please run cli/ scripts from the root directory")
         sys.exit(1)
 
     if not os.path.isdir("out"):
@@ -27,7 +28,7 @@ def computeOutDir(argv):
 
     if not os.path.isdir(dirName):
         os.mkdir(dirName)
-        print(f"\x1b[1m[ ℹ️  ] Created \x1b[36m{dirName}\x1b[39m directory\x1b[0m")
+        print(f"[ ℹ️  ] Created {dirName} directory")
 
     if not os.path.isfile(os.path.join(dirName, "LICENSE.txt")):
         shutil.copy(
@@ -78,12 +79,12 @@ def main():
     with open(f"{outDir}/enti.tsv", "wb") as outFile:
         outFile.write(result)
 
-    print(f"\x1b[1m[ ✅ ] Done. You can find the dataset at \x1b[36m{outDir}/enti.tsv\x1b[39m directory\x1b[0m")
+    print(f"[ ✅ ] Done. You can find the dataset at {outDir}/enti.tsv directory")
 
 if __name__ == "__main__":
     try:
-        print("\x1b[1m[ ℹ️  ] Started \x1b[36mdownload.py\x1b[39m script\x1b[0m")
+        print("[ ℹ️  ] Started download.py script")
         main()
     except KeyboardInterrupt:
-        print("\n\x1b[1m[ ❌ ] keyboard interrupt, aborting\x1b[0m")
+        print("[ ❌ ] keyboard interrupt, aborting")
         sys.exit(1)
