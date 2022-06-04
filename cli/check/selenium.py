@@ -16,49 +16,22 @@ import sys
 import os.path
 
 import socket
-from urllib import parse
+
+
+
 
 
 def usage():
     print("""
-./cli/point2.py check/test_to_run.js out/202?-??-??/enti.tsv [starting_index [count]] 
+./cli/selenium.py out/$SOURCE/$DATE/dataset.tsv
+
+Where:
+- $SOURCE is a folder dedicated to a particular data source
+- $DATE is the data source creation date in ISO 8601 format (eg 2022-02-28)
 """)
     sys.exit(-1)
 
 
-if len(sys.argv) > 5 or len(sys.argv) < 2:
-    usage()
-outDir = commons.computeOutDir(sys.argv)
-
-
-def normalizeUrl(url):
-    if not url.startswith('http'):
-        return 'http://' + url
-    return url
-
-# very loosy validation: leave to the browser mind reading euristics
-
-
-def looksValidUrl(url):
-    if len(url) < 4:
-        return False
-    if "@" in url:
-        return False
-    if url.startswith('about:'):
-        # yeah... somobody put "about:blank" as a PA web site
-        return False
-    return True
-
-# very loosy check: ideally only verify if the DNS can resolve the hostname
-
-
-def looksReachableUrl(url):
-    try:
-        split_url = parse.urlsplit(url)
-        socket.gethostbyname(split_url.netloc)
-        return True
-    except:
-        return False
 
 
 def clickConsentButton(url, lineNum, driver):
@@ -138,22 +111,31 @@ def runCheck(pa, lineNum, script):
     #time.sleep(100000)
     driver.quit()
 
+def loadChecks():
+    checksToRun = {}
+    files = os.listdir('./cli/check/selenium/')
+    for jsFile in files:
+        if os.path.isfile(jsFile) and jsFile.endswith('.js')
+            js = jsFile.read()
+            checksToRun[jsFile] = js
+    return checksToRun;
 
 def main(argv):
+    
+        
+    if len(sys.argv) != 2:
+        usage()
 
-    test = argv[1]
-    source = argv[2]
+    dataset = sys.argv[1]
 
-    try:
-        starting_index = int(argv[3])
-    except:
-        starting_index = 0
+    if not os.path.isfile(dataset):
+        print(f"input dataset not found {dataset}");
+        usage()
+        
+    outDir = f"{os.path.dirname(dataset)}/selenium"
 
-    try:
-        end_index = int(argv[4]) + starting_index
-    except:
-        end_index = -1
-
+    jsChecks = loadChecks()
+    
 
     count = 0
     with open(source, 'r') as f, open(test) as s:
