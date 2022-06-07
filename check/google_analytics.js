@@ -20,11 +20,11 @@ setTimeout(function(){
     // cleanup comments in js
     for(var sc of document.getElementsByTagName('script')){
         if(!sc.src) {
-            sc.text = sc.text.replace(/\/\/.+/g, "").replace(/\n/g, ' ').replace(/\/\*.*?\*\//g, '');
+            sc.text = sc.text.replaceAll(/\/\/.+/g, "").replaceAll(/\n/g, ' ').replaceAll(/\/\*.*?\*\//g, '');
         }
     }
     var html = document.all[0].innerHTML;
-    html = html.replace(/\n/g,' ').replace(/<!--[\s\S]*?-->/g, ''); // cleanup comments in html
+    html = html.replaceAll(/\n/g,' ').replaceAll(/<!--[\s\S]*?-->/g, ''); // cleanup comments in html
     var test = html.match(/UA-[0-9-]+/);
     if(test){
         // simplest possible regex test.
@@ -66,8 +66,9 @@ setTimeout(function(){
                     console.log(`found in '${sc.src}'`, test);
                     test[1] = test[0]
                 } else {
+                    var srcURI = sc.src;
                     var txtFile = new XMLHttpRequest();
-                    txtFile.open("GET", sc.src, true);
+                    txtFile.open("GET", srcURI, true);
                     txtFile.onreadystatechange = function(){  
                         if (txtFile.readyState === 4) {
                             var content = txtFile.responseText;
@@ -75,10 +76,10 @@ setTimeout(function(){
                             if(tId){
                                 if(tId.indexOf('d') != -1){
                                     document.title = "GA PRESENT BUT MISCONFIGURED";
-                                    console.log(`found inside '${sc.src}'`, document.title);
+                                    console.log(`found inside '${srcURI}'`, document.title);
                                 } else {
                                     document.title = tId[0];
-                                    console.log(`found inside '${sc.src}'`, tId);
+                                    console.log(`found inside '${srcURI}'`, tId);
                                 }
                             }
                         } 
