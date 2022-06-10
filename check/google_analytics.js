@@ -24,7 +24,7 @@ setTimeout(function(){
         }
     }
     var html = document.all[0].innerHTML;
-    html = html.replaceAll(/\n/g,' ').replaceAll(/<!--[\s\S]*?-->/g, ''); // cleanup comments in html
+    html = html.replaceAll(/\n/g,' ').replaceAll('ga-disable-UA-', '').replaceAll(/<!--[\s\S]*?-->/g, ''); // cleanup comments in html
     var test = html.match(/UA-[0-9-]+/);
     if(test){
         // simplest possible regex test.
