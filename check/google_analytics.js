@@ -25,14 +25,7 @@ setTimeout(function(){
     }
     var html = document.all[0].innerHTML;
     html = html.replaceAll(/\n/g,' ').replaceAll('ga-disable-UA-', '').replaceAll(/<!--[\s\S]*?-->/g, ''); // cleanup comments in html
-    var test = html.match(/UA-[0-9-]+/);
-    if(test){
-        // simplest possible regex test.
-        console.log("found in html.match(/UA-[0-9-]+/)", test);
-        test[1] = test[0];
-    } else {
-        test = html.match(/ga\(['"]create['"], ['"]([^'"]*)['"]/);
-    }
+    var test = html.match(/ga\(['"]create['"], ['"]([^'"]*)['"]/);
     if(test){
         console.log(`found in html.match(/ga\(['"]create['"], ['"]([^'"]*)['"]/)`, test);
     } else {
@@ -48,12 +41,18 @@ setTimeout(function(){
     }
     if(!test){
         test = html.match(/gtag\(['"]config['"], ['"]([^'"]*)['"]/);
+        if(test && test[1].substr(0,3) != "UA-" && test[1].substr(0,2) != "G-"){
+            test = null;
+        }
         if(test){
             console.log(`found in html.match(/gtag\(['"]config['"], ['"]([^'"]*)['"]/)`, test);
         }
     }
     if(!test){
         test = html.match(/push\(\[['"]_setAccount['"], ['"]([^'"]*)['"]\]/);
+        if(test && test[1].substr(0,3) != "UA-" && test[1].substr(0,2) != "G-"){
+            test = null;
+        }
         if(test){
             console.log(`found in html.match(/push\(\[['"]_setAccount['"], ['"]([^'"]*)['"]\]/)`, test);
         }
