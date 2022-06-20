@@ -25,36 +25,36 @@ setTimeout(function(){
     }
     var html = document.all[0].innerHTML;
     html = html.replaceAll(/\n/g,' ').replaceAll('ga-disable-UA-', '').replaceAll(/<!--[\s\S]*?-->/g, ''); // cleanup comments in html
-    var test = html.match(/ga\(['"]create['"], ['"]([^'"]*)['"]/);
+    var test = html.match(/ga\(['"]create['"], ?['"]([^'"]*)['"]/);
     if(test){
-        console.log(`found in html.match(/ga\(['"]create['"], ['"]([^'"]*)['"]/)`, test);
+        console.log(`found in html.match(/ga\(['"]create['"], ?['"]([^'"]*)['"]/)`, test);
     } else {
-        var test = html.match(/ga\('create', {[^}]*}/gm);
+        var test = html.match(/ga\('create', ?{[^}]*}/gm);
         if(test){
             objStr = test[0];
-            objStr = objStr.replace ("ga('create', ", 'window.MonitoraPAObj = ');
-            objStr = objStr.replace ('ga("create", ', 'window.MonitoraPAObj = ');
+            objStr = objStr.replace ("ga('create',", 'window.MonitoraPAObj = ');
+            objStr = objStr.replace ('ga("create",', 'window.MonitoraPAObj = ');
             eval(objStr);
             test[1] = window.MonitoraPAObj.trackingId;
-            console.log(`found in html.match(/ga\('create', {[^}]*}/gm);`, window.MonitoraPAObj);
+            console.log(`found in html.match(/ga\('create', ?{[^}]*}/gm);`, window.MonitoraPAObj);
         }
     }
     if(!test){
-        test = html.match(/gtag\(['"]config['"], ['"]([^'"]*)['"]/);
+        test = html.match(/gtag\(['"]config['"], ?['"]([^'"]*)['"]/);
         if(test && test[1].substr(0,3) != "UA-" && test[1].substr(0,2) != "G-"){
             test = null;
         }
         if(test){
-            console.log(`found in html.match(/gtag\(['"]config['"], ['"]([^'"]*)['"]/)`, test);
+            console.log(`found in html.match(/gtag\(['"]config['"], ?['"]([^'"]*)['"]/)`, test);
         }
     }
     if(!test){
-        test = html.match(/push\(\[['"]_setAccount['"], ['"]([^'"]*)['"]\]/);
+        test = html.match(/push\(\[['"]_setAccount['"], ?['"]([^'"]*)['"]\]/);
         if(test && test[1].substr(0,3) != "UA-" && test[1].substr(0,2) != "G-"){
             test = null;
         }
         if(test){
-            console.log(`found in html.match(/push\(\[['"]_setAccount['"], ['"]([^'"]*)['"]\]/)`, test);
+            console.log(`found in html.match(/push\(\[['"]_setAccount['"], ?['"]([^'"]*)['"]\]/)`, test);
         }
     }
     if(!test || test[1].match(/_ID/)){
