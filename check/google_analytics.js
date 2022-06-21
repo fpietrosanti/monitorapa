@@ -11,7 +11,7 @@ setTimeout(function(){
     var gaName = window.GoogleAnalyticsObject;
     if(!gaName)
         gaName = "ga"
-    if(window[gaName] && window[gaName].l){
+    if(window[gaName] && window[gaName].q && window[gaName].q[0] && (window[gaName].l||window[gaName].L)){
         // fast track (thanks Augusto Zanellato)
         console.log("found in window[gaName].q[0][1]", window[gaName].q[0][1]);
         document.title = window[gaName].q[0][1];
