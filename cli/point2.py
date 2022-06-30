@@ -97,6 +97,11 @@ def runCheck(pa, lineNum, script):
 #        saveError(lineNum, "unreachable: %s" % url)
 #        return
 
+    fname = '%s/%s.OK.txt' % (outDir, lineNum)
+    if os.path.exists(fname) and os.path.getsize(fname) > 5:
+        print("%s: already checked in a previous run, saved in %s" % (url, fname))
+        return
+
     op = webdriver.ChromeOptions()
     op.add_argument('--headless')
     op.add_argument('--disable-web-security')
@@ -125,7 +130,6 @@ def runCheck(pa, lineNum, script):
             time.sleep(4)
         driver.execute_script(script)
         time.sleep(4)
-        fname = '%s/%s.OK.txt' % (outDir, lineNum)
         with open(fname, 'w') as f:
             f.write(driver.title)
         print("%s: found '%s', saved in %s" % (url, driver.title, fname))
