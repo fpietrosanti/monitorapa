@@ -52,7 +52,7 @@ def computeOutDir(argv):
                 https://monitora-pa.it/
                 The file enti.tsv has been originally created by AgID and distributed under CC BY 4.0.
                 An up-to-date version can be downloaded from https://indicepa.gov.it/ipa-dati/dataset/enti
-                The derivative works provided here (sometimes with the same file name) 
+                Every derivative work provided here (sometimes with the same file name) 
                 can be used according to the terms and conditions of the Hacking License.
                 Everything else inside this folder can be used according to the terms 
                 and conditions of the Hacking License.
