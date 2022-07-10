@@ -75,6 +75,14 @@ Prima di salvare il file lo script verifica che non ci siano righe duplicate
 In sostanza, dataset.tsv contiene l'elenco degli automatismi da testare
 associati a ciascun ente.
 
+**NOTA BENE**: tutti i file prodotti dagli script successivi ai download
+(incluso `normalize.py`) hanno una struttura fissa convenzionale e **non è
+dunque necessario aggiungere una riga di intestazione con i nomi delle colonne**.
+
+In questo modo sarà possibile parallelizzare l'esecuzione di qualsiasi
+script dell'osservatorio semplicemente eseguendo uno `split -l` sul suo
+input.
+
 
 ## Verifiche
 
@@ -139,11 +147,11 @@ un file tsv con il suo stesso nome, ad esempio
 `./cli/check/http.py ./out/enti/YYYY-MM-DD/dataset.tsv`
 scriverà il proprio output in ./out/enti/YYYY-MM-DD/check/http.tsv
 
-`./cli/check/smpt.py ./out/enti/YYYY-MM-DD/dataset.tsv`
-scriverà il proprio output in ./out/enti/YYYY-MM-DD/check/smpt.tsv
+`./cli/check/smtp.py ./out/enti/YYYY-MM-DD/dataset.tsv`
+scriverà il proprio output in ./out/enti/YYYY-MM-DD/check/smtp.tsv
 
-`./cli/check/browse,py ./out/enti/YYYY-MM-DD/dataset.tsv google_analytics`
-scriverà il proprio output in ./out/enti/YYYY-MM-DD/check/google_analytics.tsv
+`./cli/check/selenium.py ./out/enti/YYYY-MM-DD/dataset.tsv`
+scriverà il proprio output in ./out/enti/YYYY-MM-DD/check/selenium/*.tsv
 
 Ogni check può utilizzare una cartella con il proprio nome, dentro
 check/ per eventuali dati temporanei
