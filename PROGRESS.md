@@ -158,7 +158,8 @@ monitorapa
 │   │   │   │   │   http.tsv
 │   │   │   │   │   smtp.tsv
 │   │   │   │   │   browse/
-│   │   │   │   │   │   google_analytics.tsv
+│   │   │   │   │   │   google_analytics.tsv <--- naming convention protocollo_nometest
+│   │   │   │   │   │   smtp_tls.tsv <-- dataset google
 │   │   │   │
 │   │   │   └───report
 │   │   │   │   │   http.png
@@ -175,5 +176,8 @@ monitorapa
 │   │   │   │   │   google_analytics.tsv
 │   │   │   │
 │   │   │   └───report
-│   │   │   │   │   http.png
+│   │   │   │   │   all.png <-- tutti i test 
+│   │   │   │   │   http.png <-- tutti i test http
+│   │   │   │   │   google_analytics.png <-- i test http specifici
+│   │   │   │   │   smtp.png <-- tutti i test smtp (tls, mx google, mx microsoft, etc)
 ```
