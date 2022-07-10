@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PYTHONPATH=.
+
 LOG="$1"
 if [ "x" == "x$LOG" ]; then
     DATE=$(date "+%Y-%m-%d")
